@@ -2,8 +2,8 @@
 /**
  * Plugin Name: KSAS Global Widgets
  * Plugin URI: http://krieger.jhu.edu/communications/web/plugins
- * Description: Contains a widget for Hub articles based on tag, recent news stories from another site of your choice, Upcoming Events for both Site Executive and Google calendars
- * Version: 0.1
+ * Description: Widgets for SE Calendar, Stories from the Hub (widget, template tag, and shortcode), Custom RSS, News from another site, search form shortcode
+ * Version: 1.2
  * Author: Cara Peckens
  *
  * This program is distributed in the hope that it will be useful,
@@ -316,7 +316,7 @@ function hopkins_hub_shortcode($atts, $content=null) {
 	'image_size'     => 'square_thumbnail',	 
 	), $atts));
 	 	
-		$hub_url = 'http://api.hub.jhu.edu/articles?v=0&return_format=json&tags=' . $keywords . '&per_page=' . $quantity;
+		$hub_url = 'http://api.hub.jhu.edu/articles?v=0&key=bed3238d428c2c710a65d813ebfb2baa664a2fef&return_format=json&tags=' . $keywords . '&per_page=' . $quantity;
 		$rCURL = curl_init();
 			curl_setopt($rCURL, CURLOPT_URL, $hub_url);
 			curl_setopt($rCURL, CURLOPT_HEADER, 0);
@@ -328,16 +328,20 @@ function hopkins_hub_shortcode($atts, $content=null) {
 		$hub_articles = $hub_results['_embedded']; ?>
 		<div id="widget" class="widget row hub">
 			<div class="widget_title"><h5>From the Hub</h5></div>
-		<?php foreach($hub_articles['articles'] as $hub_article) { ?>
+		<?php if(is_array($hub_articles['articles'])){foreach($hub_articles['articles'] as $hub_article) { ?>
 				<article>
 						<a href="<?php echo $hub_article['url']; ?>">
 							<img src="<?php echo $hub_article['_embedded']['image_thumbnail'][0]['sizes'][$image_size]; ?>" />
 							<h6><?php echo $hub_article['headline']; ?></h6>
-							<p><?php echo $hub_article['subheadline']; ?></p>
+							<p><?php echo $hub_article['subheadline']; 
+											 if (empty($hub_article['subheadline'])) { 
+												 echo $hub_article['excerpt'];
+											} ?>
+							</p>
 						</a>
 				</article>
 			
-		<?php }	?>
+		<?php }	} ?>
 		</div>
 		
 	<?php }
