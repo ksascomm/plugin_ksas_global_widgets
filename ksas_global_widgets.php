@@ -35,7 +35,7 @@ class Hopkins_Hub_Widget extends WP_Widget {
 		$quantity = $instance['quantity'];
 		$keywords = $instance['keywords'];
 		$image_size = $instance['image_size'];
-		$hub_url = 'http://api.hub.jhu.edu/articles?v=0&key=bed3238d428c2c710a65d813ebfb2baa664a2fef&return_format=json&tags=' . $keywords . '&per_page=' . $quantity;
+		$hub_url = 'http://api.hub.jhu.edu/articles?v=1&key=bed3238d428c2c710a65d813ebfb2baa664a2fef&return_format=json&tags=' . $keywords . '&per_page=' . $quantity;
 			$rCURL = curl_init();
 				curl_setopt($rCURL, CURLOPT_URL, $hub_url);
 				curl_setopt($rCURL, CURLOPT_HEADER, 0);
